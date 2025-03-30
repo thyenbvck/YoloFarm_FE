@@ -1,25 +1,10 @@
 import { Client } from "@stomp/stompjs";
+import { SensorData } from "../types/SensorData";
+import { DeviceActivity } from "../types/DeviceActivity";
+import { Alert } from "../types/Alert";
 
-interface SensorData {
-  type: "TEMPERATURE" | "HUMIDITY" | "LIGHT" | "SOIL_MOISTURE";
-  value: number;
-  recordedAt: Date;
-}
 
-interface DeviceActivity {
-  deviceName: "den" | "maybom";
-  action: "on" | "off";
-  triggeredBy: "System" | "User";
-  reason: string;
-  timestamp: Date;
-}
 
-interface Alert {
-  type: "TEMPERATURE" | "HUMIDITY" | "LIGHT" | "SOIL_MOISTURE";
-  value: number;
-  message: string;
-  createdAt: Date;
-}
 
 class WebSocketService {
   private client: Client;
