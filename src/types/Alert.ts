@@ -1,4 +1,5 @@
-export interface Alert {
+export interface AlertData {
+  id: string,
   type: "TEMPERATURE" | "HUMIDITY" | "LIGHT" | "SOIL_MOISTURE";
   value: number;
   message: string;

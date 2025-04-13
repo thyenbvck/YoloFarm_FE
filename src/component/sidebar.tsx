@@ -21,11 +21,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, active = false })
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="h-screen w-60 bg-gradient-to-b from-green-700 to-green-500 p-5 text-white flex flex-col justify-between">
+    <div className="h-screen w-72 bg-gradient-to-b from-green-700 to-green-500 text-white flex flex-col justify-between">
       {/* Menu Items */}
       <div>
-        <h2 className="text-xl font-bold mb-6">Dashboard</h2>
-        <ul className="space-y-4">
+        <h2 className="text-xl font-bold mb-6 p-5">Dashboard</h2>
+        <ul className="p-4 space-y-3">
           <SidebarItem icon={<Home size={20} />} text="Home" />
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<Cloud size={20} />} text="Humidity" />
@@ -37,12 +37,12 @@ const Sidebar: React.FC = () => {
 
       {/* Bottom Section */}
       <div>
-        <ul className="space-y-4">
+        <ul className="p-4 space-y-3">
           <SidebarItem icon={<FileText size={20} />} text="Report" />
           <SidebarItem icon={<Bell size={20} />} text="Notification" />
           <SidebarItem icon={<Settings size={20} />} text="Setting" />
         </ul>
-        <button className="mt-6 flex items-center w-4/5 bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition">
+        <button className="mt-6 flex items-center w-4/5 bg-gray-700 p-3  rounded-lg hover:bg-gray-600 transition">
           <LogOut size={20} />
           <span className="ml-3">Logout</span>
         </button>

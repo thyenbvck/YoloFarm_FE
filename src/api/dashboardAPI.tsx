@@ -1,7 +1,7 @@
 import { Client } from "@stomp/stompjs";
 import { SensorData } from "../types/SensorData";
 import { DeviceActivity } from "../types/DeviceActivity";
-import { Alert } from "../types/Alert";
+import { AlertData } from "../types/Alert";
 
 
 
@@ -11,7 +11,7 @@ class WebSocketService {
   private listeners: {
     onSensorData?: (data: SensorData) => void;
     onDeviceActivity?: (activity: DeviceActivity) => void;
-    onAlert?: (alert: Alert) => void;
+    onAlert?: (alert: AlertData) => void;
   } = {};
 
   constructor() {
@@ -55,7 +55,7 @@ class WebSocketService {
 
         // Lắng nghe cảnh báo
         this.client.subscribe("/topic/microbit/limit", (message) => {
-          let alert: Alert = JSON.parse(message.body);
+          let alert: AlertData = JSON.parse(message.body);
           this.listeners.onAlert?.(alert);
         });
       },
@@ -76,7 +76,7 @@ class WebSocketService {
   }
 
   // Đăng ký callback khi có cảnh báo
-  onAlert(callback: (alert: Alert) => void) {
+  onAlert(callback: (alert: AlertData) => void) {
     this.listeners.onAlert = callback;
   }
 
