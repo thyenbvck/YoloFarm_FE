@@ -14,7 +14,6 @@ import Sidebar from "../component/sidebar.js";
 import UserInfo from "../component/toolBar.jsx";
 import avatar from "../assets/avt.jpg";
 import websocketService from "../api/dashboardAPI.js";
-import Slider from "react-slick";
 import { getLocationAndTime } from "@/utils/LocationandTime.js";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import type { AlertData } from "@/types/Alert.js";

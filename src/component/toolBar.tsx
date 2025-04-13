@@ -1,7 +1,29 @@
 import React, { useState } from "react"
 import { Moon, Sun, Circle, CheckCircle, Bell } from "lucide-react"
-
-const UserInfo = ({ name, status, avatar }) => {
+import NotificationBell from "./NotificationBell"
+import { AlertData } from "@/types/Alert"
+type UserInfoProps = {
+  name: string;
+  status: string;
+  avatar: string;
+};
+const UserInfo = ({ name, status, avatar }:UserInfoProps) => {
+  const alerts: AlertData[] = [
+    {
+      id: '1',
+      type: 'TEMPERATURE',
+      value: 80,
+      message: 'Cảnh báo nhiệt độ cao',
+      createdAt: new Date(),
+    },
+    {
+      id: '2',
+      type: 'HUMIDITY',
+      value: 90,
+      message: 'Độ ẩm vượt ngưỡng',
+      createdAt: new Date(),
+    },
+  ]
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [hasNotification, setHasNotification] = useState(true) // giả lập có thông báo
 
@@ -21,15 +43,9 @@ const UserInfo = ({ name, status, avatar }) => {
       </button>
       {/* User Info */}
       <div className="flex items-center">
-      <div
-        className="relative cursor-pointer pr-12"
-        onClick={() => setHasNotification(false)}
-      >
-        <Bell className="w-6 h-6" />
-        {hasNotification && (
-          <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full animate-ping" />
-        )}
-      </div>
+      <div className="p-4">
+      <NotificationBell alerts={alerts} />
+    </div>
         <img
           src={avatar}
           alt="Avatar"
