@@ -40,7 +40,7 @@ interface NotificationBellProps {
         </button>
   
         {showDropdown && (
-          <div className="absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className="absolute left-1/2 z-10 mt-2 w-64 -translate-x-1/2 origin-top rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="p-2">
               {alerts.length === 0 ? (
                 <p className="text-gray-500 text-sm text-center">Không có cảnh báo</p>

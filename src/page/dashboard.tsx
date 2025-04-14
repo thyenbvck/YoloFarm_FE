@@ -157,10 +157,11 @@ const Dashboard = () => {
       <div className="w-1/4 bg-gray-200">
         <Sidebar />
       </div>
-      <div className="flex-grow p-5 bg-gray-100">
+      <div className="flex-grow p-4 bg-gray-100">
         <div className="grid grid-cols-12 gap-4 auto-rows-auto">
-          <div className="col-span-12">
+          <div className="col-span-12 ">
             <UserInfo name="Bach Hoang" status="available" avatar={avatar} />
+            {/* <Button onClick={handleShowAlert}>Alert</Button> */}
           </div>
 
           <div className="col-span-3 row-span-2 bg-green-600 text-white p-5 rounded-lg shadow-lg text-center">
@@ -258,7 +259,7 @@ const Dashboard = () => {
               <div className="flex justify-center mt-3">
                 {renderChart(humidityData, "#ff0000")}
               </div>
-              <h2 className="text-lg font-semibold mb-2 pl-55">Độ ẩm</h2>
+              <h2 className="text-lg font-semibold mb-2 pl-65">Độ ẩm</h2>
             </div>
 
             <div className="w-1/3">
