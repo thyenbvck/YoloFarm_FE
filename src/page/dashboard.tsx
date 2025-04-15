@@ -41,20 +41,30 @@ const Dashboard = () => {
     longitude: number;
   } | null>(null);
   const [time, setTime] = useState<string>("");
-  const handleShowAlert = () => {
-    const newAlert: AlertData = {
-      id: crypto.randomUUID(), // Dùng UUID để tạo id ngẫu nhiên
-      type: "TEMPERATURE", // Đảm bảo type chỉ nhận một trong các giá trị đã khai báo
-      value: 80,
-      message: "Cảnh báo nhiệt độ",
-      createdAt: new Date(),
-    };
-    setAlerts((prev) => [...prev, newAlert]);
-    // Xóa alert sau 3 giây
-    setTimeout(() => {
-      setAlerts((prev) => prev.filter((alert) => alert.id !== newAlert.id));
-    }, 3000);
-  };
+  // const handleShowAlert = () => {
+  //   const newAlert: AlertData = {
+  //     id: crypto.randomUUID(), // Dùng UUID để tạo id ngẫu nhiên
+  //     type: "TEMPERATURE", // Đảm bảo type chỉ nhận một trong các giá trị đã khai báo
+  //     value: 80,
+  //     message: "Cảnh báo nhiệt độ",
+  //     createdAt: new Date(),
+  //   };
+  //   setAlerts((prev) => [...prev, newAlert]);
+  //   // Xóa alert sau 3 giây
+  //   setTimeout(() => {
+  //     setAlerts((prev) => prev.filter((alert) => alert.id !== newAlert.id));
+  //   }, 3000);
+  // };
+    const handleControl = async (device: "den" | "maybom", action: "on" | "off") => {
+      try {
+        const result = await websocketService.sendCommand(device, action);
+        console.log("✔️ Kết quả:", result);
+        alert(`Đã gửi lệnh ${action} cho thiết bị ${device}`);
+      } catch (error) {
+        console.error("❌ Lỗi:", error);
+        alert("Gửi lệnh thất bại");
+      }
+    }
   useEffect(() => {
     websocketService.onSensorData((data) => {
       const timestamp = new Date().toLocaleTimeString();
@@ -91,17 +101,20 @@ const Dashboard = () => {
         setIsPumpOn(activity.action === "on");
       }
     });
-
-    // Lắng nghe cảnh báo
     websocketService.onAlert((alert) => {
       setAlerts((prev) => [...prev, alert]);
-
-      // Tự động ẩn alert sau 3 giây
       setTimeout(() => {
         setAlerts((prev) =>
           prev.filter((a) => a.createdAt !== alert.createdAt)
         );
       }, 3000);
+      if (alert.type === "TEMPERATURE") {
+        websocketService.sendCommand("maybom", "on");
+      } else if (alert.type === "LIGHT") {
+        if (isLightOn === true) {
+          websocketService.sendCommand("den", "off");
+        }
+      }
     });
   }, []);
   useEffect(() => {
@@ -131,8 +144,8 @@ const Dashboard = () => {
   const renderChart = (data: any[], color: string) => {
     return (
       <LineChart
-        width={500}
-        height={300}
+        width={450}
+        height={250}
         data={data.length > 0 ? data : [{ time: "", value: 0 }]}
       >
         <CartesianGrid strokeDasharray="3 3" />
@@ -157,28 +170,28 @@ const Dashboard = () => {
       <div className="w-1/4 bg-gray-200">
         <Sidebar />
       </div>
-      <div className="flex-grow p-4 bg-gray-100">
-        <div className="grid grid-cols-12 gap-4 auto-rows-auto">
+      <div className="flex-grow p-3 bg-gray-100">
+        <div className="grid grid-cols-12 gap-3 auto-rows-auto">
           <div className="col-span-12 ">
             <UserInfo name="Bach Hoang" status="available" avatar={avatar} />
             {/* <Button onClick={handleShowAlert}>Alert</Button> */}
           </div>
 
-          <div className="col-span-3 row-span-2 bg-green-600 text-white p-5 rounded-lg shadow-lg text-center">
+          <div className="col-span-2 row-span-2 bg-greenStart text-white rounded-lg shadow-lg text-center">
             <p className="text-lg">Smart Farm</p>
             <h1 className="text-3xl font-bold">No. 1</h1>
           </div>
 
-          <div className="col-span-6 row-span-2 bg-green-600 text-white p-5 rounded-lg shadow-lg text-center relative">
+          <div className="col-span-6 row-span-2 bg-greenStart text-white rounded-lg shadow-lg text-center relative">
             <p className="text-lg absolute right-20 top-7">Hồ Chí Minh</p>
             <p className="text-lg absolute right-12 bottom-7">{time}</p>
           </div>
-          <div className="col-span-3 row-span-1 bg-white p-4 shadow-lg rounded-lg text-center">
-  <div className="flex items-center justify-center gap-4">
-    <span className="text-5xl text-yellow-500">💡</span>
-    <p className="text-xl font-bold text-yellow-600">LIGHT</p>
+          <div className="col-span-2 row-span-2 bg-white p-4 shadow-lg rounded-lg flex flex-col justify-center items-center gap-4">
+  <div className="flex flex-wrap justify-center items-center gap-4 w-full">
+    <span className="text-3xl text-yellow-500">💡</span>
+    <p className="text-xl font-bold text-yellow-600 whitespace-nowrap">LIGHT</p>
     <button
-      className={`ml-4 px-4 py-2 rounded-full text-white transition ${
+      className={`px-4 py-2 rounded-full text-white transition ${
         isLightOn ? "bg-yellow-500" : "bg-gray-500"
       }`}
       onClick={toggleLight}
@@ -189,9 +202,10 @@ const Dashboard = () => {
 </div>
 
 
-<div className="col-span-3 row-span-1 bg-white p-4 shadow-lg rounded-lg">
-  <div className="flex items-center justify-center gap-4">
-    <span className="text-5xl text-blue-500">💦</span>
+
+<div className="col-span-2 row-span-2 bg-white shadow-lg rounded-lg flex flex-col justify-center items-center">
+<div className="flex flex-wrap justify-center items-center gap-4 w-full">
+    <span className="text-3xl text-blue-500">💦</span>
     <p className="text-xl font-bold text-blue-600">PUMP</p>
     <button
       className={`ml-4 px-4 py-2 rounded-full text-white transition ${
@@ -253,20 +267,20 @@ const Dashboard = () => {
               <div className="flex justify-center mt-3">
                 {renderChart(temperatureData, "#ff0000")}
               </div>
-              <h2 className="text-lg font-semibold mb-2 pl-55">Nhiệt độ</h2>
+              <h2 className="text-lg font-semibold mb-2 pl-35">Temperature</h2>
             </div>
             <div className="w-1/3">
               <div className="flex justify-center mt-3">
                 {renderChart(humidityData, "#ff0000")}
               </div>
-              <h2 className="text-lg font-semibold mb-2 pl-65">Độ ẩm</h2>
+              <h2 className="text-lg font-semibold mb-2 pl-45">Humidity</h2>
             </div>
 
             <div className="w-1/3">
               <div className="flex justify-center mt-3">
                 {renderChart(lightData, "#ff0000")}
               </div>
-              <h2 className="text-lg font-semibold mb-2 pl-55">Ánh sáng</h2>
+              <h2 className="text-lg font-semibold mb-2 pl-50">Light</h2>
             </div>
           </div>
         </div>
@@ -279,5 +293,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;
