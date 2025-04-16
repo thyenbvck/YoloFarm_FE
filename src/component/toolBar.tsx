@@ -9,46 +9,50 @@ type UserInfoProps = {
   avatar: string;
 };
 const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
-  // const [alerts, setAlerts] = useState<AlertData[]>([]);
-  const alerts: AlertData[] = [
-    {
-      id: "1",
-      type: "TEMPERATURE",
-      value: 80,
-      message: "Cảnh báo nhiệt độ cao",
-      createdAt: new Date(),
-    },
-    {
-      id: "2",
-      type: "HUMIDITY",
-      value: 90,
-      message: "Độ ẩm vượt ngưỡng",
-      createdAt: new Date(),
-    },
-    {
-      id: "3",
-      type: "HUMIDITY",
-      value: 90,
-      message: "Độ ẩm vượt ngưỡng",
-      createdAt: new Date(),
-    },
-    {
-      id: "4",
-      type: "HUMIDITY",
-      value: 90,
-      message: "Độ ẩm vượt ngưỡng",
-      createdAt: new Date(),
-    },
-  ];
+  const [alerts, setAlerts] = useState<AlertData[]>([]);
+  // const alerts: AlertData[] = [
+  //   {
+  //     id: "1",
+  //     type: "TEMPERATURE",
+  //     value: 80,
+  //     message: "Cảnh báo nhiệt độ cao",
+  //     createdAt: new Date(),
+  //   },
+  //   {
+  //     id: "2",
+  //     type: "HUMIDITY",
+  //     value: 90,
+  //     message: "Độ ẩm vượt ngưỡng",
+  //     createdAt: new Date(),
+  //   },
+  //   {
+  //     id: "3",
+  //     type: "HUMIDITY",
+  //     value: 90,
+  //     message: "Độ ẩm vượt ngưỡng",
+  //     createdAt: new Date(),
+  //   },
+  //   {
+  //     id: "4",
+  //     type: "HUMIDITY",
+  //     value: 90,
+  //     message: "Độ ẩm vượt ngưỡng",
+  //     createdAt: new Date(),
+  //   },
+  // ];
   const [isDarkMode, setIsDarkMode] = useState(false);
-  // useEffect(() => {
-  //   const getAlerts = async () => {
-  //     const data = await fetchAlerts();
-  //     setAlerts(data);
-  //   };
+  useEffect(() => {
+    const getAlerts = async () => {
+      const data = await fetchAlerts();
+      const sortedAlerts = [...alerts].sort((a, b) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+      console.log(sortedAlerts);
+      setAlerts(sortedAlerts);
+    };
 
-  //   getAlerts();
-  // }, []);
+    getAlerts();
+  }, []);
   return (
     <div
       className={`w-full rounded-lg flex items-center justify-between  p-2 shadow-lg z-50 ${

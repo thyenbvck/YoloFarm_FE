@@ -1,6 +1,6 @@
 import { IUserLogin, IUser } from "../../types/auth";
 
-const API_URL = "https://example.com/api/auth/login";
+const API_URL = "https://localhost:8080/api/auth/login";
 
 export const login = async (credentials: IUserLogin): Promise<IUser> => {
   const response = await fetch(API_URL, {
