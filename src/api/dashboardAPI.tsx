@@ -3,9 +3,6 @@ import { SensorData } from "../types/SensorData";
 import { DeviceActivity } from "../types/DeviceActivity";
 import { AlertData } from "../types/Alert";
 
-
-
-
 class WebSocketService {
   private client: Client;
   private listeners: {

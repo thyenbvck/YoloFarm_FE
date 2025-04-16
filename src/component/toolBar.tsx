@@ -1,32 +1,54 @@
-import React, { useState } from "react"
-import { Moon, Sun, Circle, CheckCircle, Bell } from "lucide-react"
-import NotificationBell from "./NotificationBell"
-import { AlertData } from "@/types/Alert"
+import React, { useState, useEffect } from "react";
+import { Moon, Sun, Circle, CheckCircle, Bell } from "lucide-react";
+import NotificationBell from "./NotificationBell";
+import { AlertData } from "@/types/Alert";
+import { fetchAlerts } from "@/api/getNotificationAPI";
 type UserInfoProps = {
   name: string;
   status: string;
   avatar: string;
 };
-const UserInfo = ({ name, status, avatar }:UserInfoProps) => {
+const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
+  // const [alerts, setAlerts] = useState<AlertData[]>([]);
   const alerts: AlertData[] = [
     {
-      id: '1',
-      type: 'TEMPERATURE',
+      id: "1",
+      type: "TEMPERATURE",
       value: 80,
-      message: 'Cảnh báo nhiệt độ cao',
+      message: "Cảnh báo nhiệt độ cao",
       createdAt: new Date(),
     },
     {
-      id: '2',
-      type: 'HUMIDITY',
+      id: "2",
+      type: "HUMIDITY",
       value: 90,
-      message: 'Độ ẩm vượt ngưỡng',
+      message: "Độ ẩm vượt ngưỡng",
       createdAt: new Date(),
     },
-  ]
-  const [isDarkMode, setIsDarkMode] = useState(false)
-  const [hasNotification, setHasNotification] = useState(true) // giả lập có thông báo
+    {
+      id: "3",
+      type: "HUMIDITY",
+      value: 90,
+      message: "Độ ẩm vượt ngưỡng",
+      createdAt: new Date(),
+    },
+    {
+      id: "4",
+      type: "HUMIDITY",
+      value: 90,
+      message: "Độ ẩm vượt ngưỡng",
+      createdAt: new Date(),
+    },
+  ];
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  // useEffect(() => {
+  //   const getAlerts = async () => {
+  //     const data = await fetchAlerts();
+  //     setAlerts(data);
+  //   };
 
+  //   getAlerts();
+  // }, []);
   return (
     <div
       className={`w-full rounded-lg flex items-center justify-between  p-2 shadow-lg z-50 ${
@@ -43,9 +65,9 @@ const UserInfo = ({ name, status, avatar }:UserInfoProps) => {
       </button> */}
       {/* User Info */}
       <div className="flex items-center">
-      <div className="p-2">
-      <NotificationBell alerts={alerts} />
-    </div>
+        <div className="p-2">
+          <NotificationBell alerts={alerts} />
+        </div>
         <img
           src={avatar}
           alt="Avatar"
@@ -64,7 +86,7 @@ const UserInfo = ({ name, status, avatar }:UserInfoProps) => {
         </div> */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserInfo
+export default UserInfo;

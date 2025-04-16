@@ -31,7 +31,7 @@ const Dashboard = () => {
     { time: string; value: number }[]
   >([]);
   const [lightData, setLightData] = useState<{ time: string; value: number }[]>(
-    []
+    [],
   );
   const [isLightOn, setIsLightOn] = useState<boolean>(false);
   const [isPumpOn, setIsPumpOn] = useState<boolean>(false);
@@ -41,30 +41,19 @@ const Dashboard = () => {
     longitude: number;
   } | null>(null);
   const [time, setTime] = useState<string>("");
-  // const handleShowAlert = () => {
-  //   const newAlert: AlertData = {
-  //     id: crypto.randomUUID(), // Dùng UUID để tạo id ngẫu nhiên
-  //     type: "TEMPERATURE", // Đảm bảo type chỉ nhận một trong các giá trị đã khai báo
-  //     value: 80,
-  //     message: "Cảnh báo nhiệt độ",
-  //     createdAt: new Date(),
-  //   };
-  //   setAlerts((prev) => [...prev, newAlert]);
-  //   // Xóa alert sau 3 giây
-  //   setTimeout(() => {
-  //     setAlerts((prev) => prev.filter((alert) => alert.id !== newAlert.id));
-  //   }, 3000);
-  // };
-    const handleControl = async (device: "den" | "maybom", action: "on" | "off") => {
-      try {
-        const result = await websocketService.sendCommand(device, action);
-        console.log("✔️ Kết quả:", result);
-        alert(`Đã gửi lệnh ${action} cho thiết bị ${device}`);
-      } catch (error) {
-        console.error("❌ Lỗi:", error);
-        alert("Gửi lệnh thất bại");
-      }
+  const handleControl = async (
+    device: "den" | "maybom",
+    action: "on" | "off",
+  ) => {
+    try {
+      const result = await websocketService.sendCommand(device, action);
+      console.log("✔️ Kết quả:", result);
+      alert(`Đã gửi lệnh ${action} cho thiết bị ${device}`);
+    } catch (error) {
+      console.error("❌ Lỗi:", error);
+      alert("Gửi lệnh thất bại");
     }
+  };
   useEffect(() => {
     websocketService.onSensorData((data) => {
       const timestamp = new Date().toLocaleTimeString();
@@ -105,7 +94,7 @@ const Dashboard = () => {
       setAlerts((prev) => [...prev, alert]);
       setTimeout(() => {
         setAlerts((prev) =>
-          prev.filter((a) => a.createdAt !== alert.createdAt)
+          prev.filter((a) => a.createdAt !== alert.createdAt),
         );
       }, 3000);
       if (alert.type === "TEMPERATURE") {
@@ -177,46 +166,55 @@ const Dashboard = () => {
             {/* <Button onClick={handleShowAlert}>Alert</Button> */}
           </div>
 
-          <div className="col-span-2 row-span-2 bg-greenStart text-white rounded-lg shadow-lg text-center">
-            <p className="text-lg">Smart Farm</p>
-            <h1 className="text-3xl font-bold">No. 1</h1>
-          </div>
+          <div className="col-span-2 row-span-2 bg-greenStart text-white rounded-lg shadow-xl flex items-center justify-center p-6 hover:scale-105 transition-transform duration-300">
+  <div className="text-center">
+    <p className="text-lg font-semibold text-gray-300">Smart Farm</p>
+    <h1 className="text-4xl font-extrabold text-white leading-tight mt-2">
+      No. 1
+    </h1>
+  </div>
+</div>
 
-          <div className="col-span-6 row-span-2 bg-greenStart text-white rounded-lg shadow-lg text-center relative">
-            <p className="text-lg absolute right-20 top-7">Hồ Chí Minh</p>
-            <p className="text-lg absolute right-12 bottom-7">{time}</p>
-          </div>
+
+<div className="col-span-6 row-span-2 bg-gradient-to-r bg-greenStart text-white rounded-lg shadow-xl text-center relative p-8 hover:scale-105 transition-transform duration-300">
+  <p className="text-3xl font-extrabold absolute right-12 top-4 drop-shadow-lg">{time}</p> {/* Giờ */}
+  <p className="text-5xl font-extrabold absolute right-12 top-1/2 transform -translate-y-1/2 drop-shadow-lg">{`Hồ Chí Minh`}</p> {/* Hồ Chí Minh */}
+  <p className="text-xs absolute right-12 bottom-4 text-gray-200">{new Date().toLocaleDateString("vi-VN")}</p> {/* Ngày */}
+</div>
+
+
+
           <div className="col-span-2 row-span-2 bg-white p-4 shadow-lg rounded-lg flex flex-col justify-center items-center gap-4">
-  <div className="flex flex-wrap justify-center items-center gap-4 w-full">
-    <span className="text-3xl text-yellow-500">💡</span>
-    <p className="text-xl font-bold text-yellow-600 whitespace-nowrap">LIGHT</p>
-    <button
-      className={`px-4 py-2 rounded-full text-white transition ${
-        isLightOn ? "bg-yellow-500" : "bg-gray-500"
-      }`}
-      onClick={toggleLight}
-    >
-      {isLightOn ? "Turn Off" : "Turn On"}
-    </button>
-  </div>
-</div>
+            <div className="flex flex-wrap justify-center items-center gap-4 w-full">
+              <span className="text-3xl text-yellow-500">💡</span>
+              <p className="text-xl font-bold text-yellow-600 whitespace-nowrap">
+                LIGHT
+              </p>
+              <button
+                className={`px-4 py-2 rounded-full text-white transition ${
+                  isLightOn ? "bg-yellow-500" : "bg-gray-500"
+                }`}
+                onClick={toggleLight}
+              >
+                {isLightOn ? "Turn Off" : "Turn On"}
+              </button>
+            </div>
+          </div>
 
-
-
-<div className="col-span-2 row-span-2 bg-white shadow-lg rounded-lg flex flex-col justify-center items-center">
-<div className="flex flex-wrap justify-center items-center gap-4 w-full">
-    <span className="text-3xl text-blue-500">💦</span>
-    <p className="text-xl font-bold text-blue-600">PUMP</p>
-    <button
-      className={`ml-4 px-4 py-2 rounded-full text-white transition ${
-        isPumpOn ? "bg-blue-500" : "bg-gray-500"
-      }`}
-      onClick={togglePump}
-    >
-      {isPumpOn ? "Turn Off" : "Turn On"}
-    </button>
-  </div>
-</div>
+          <div className="col-span-2 row-span-2 bg-white shadow-lg rounded-lg flex flex-col justify-center items-center">
+            <div className="flex flex-wrap justify-center items-center gap-4 w-full">
+              <span className="text-3xl text-blue-500">💦</span>
+              <p className="text-xl font-bold text-blue-600">PUMP</p>
+              <button
+                className={`ml-4 px-4 py-2 rounded-full text-white transition ${
+                  isPumpOn ? "bg-blue-500" : "bg-gray-500"
+                }`}
+                onClick={togglePump}
+              >
+                {isPumpOn ? "Turn Off" : "Turn On"}
+              </button>
+            </div>
+          </div>
 
           <div className="col-span-3 bg-white p-4 shadow-lg rounded-lg text-center">
             <p className="text-red-500 font-bold">🌡 TEMPERATURE</p>
@@ -232,7 +230,7 @@ const Dashboard = () => {
             <p className="text-yellow-500 font-bold">☀ LIGHT</p>
             <p className="text-xl font-semibold">{light} Lux</p>
           </div>
-          
+
           <div className="w-[200px] h-[120px] flex flex-col items-center overflow-hidden pl-20">
             <p className="text-gray-800 text-l font-bold">ĐỘ ẨM ĐẤT</p>
             <div className="relative flex justify-center">

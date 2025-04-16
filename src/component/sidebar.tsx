@@ -1,12 +1,27 @@
-import { Home, LayoutDashboard, Cloud, Sun, Thermometer, Users, FileText, Bell, Settings, LogOut } from "lucide-react";
+import {
+  Home,
+  LayoutDashboard,
+  Cloud,
+  Sun,
+  Thermometer,
+  Users,
+  FileText,
+  Bell,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { JSX } from "react";
 
 interface SidebarItemProps {
   icon: JSX.Element;
   text: string;
-  active?: boolean; 
+  active?: boolean;
 }
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, active = false }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  icon,
+  text,
+  active = false,
+}) => {
   return (
     <li
       className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-gray-600 transition ${active ? "bg-gray-700" : ""}`}
@@ -23,7 +38,11 @@ const Sidebar: React.FC = () => {
       <div>
         <ul className="p-4 space-y-3">
           <SidebarItem icon={<Home size={20} />} text="Home" />
-          <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
+          <SidebarItem
+            icon={<LayoutDashboard size={20} />}
+            text="Dashboard"
+            active
+          />
           <SidebarItem icon={<Cloud size={20} />} text="Humidity" />
           <SidebarItem icon={<Sun size={20} />} text="Light" />
           <SidebarItem icon={<Thermometer size={20} />} text="Temperature" />
@@ -37,10 +56,10 @@ const Sidebar: React.FC = () => {
           <SidebarItem icon={<FileText size={20} />} text="Report" />
           <SidebarItem icon={<Bell size={20} />} text="Notification" />
           <SidebarItem icon={<Settings size={20} />} text="Setting" />
-          <button className="mt-4 flex items-center w-4/5 bg-gray-700 p-2  rounded-lg hover:bg-gray-600" >
-          <LogOut size={20} />
-          <span className="ml-3">Logout</span>
-        </button>
+          <button className="mt-4 flex items-center w-4/5 bg-gray-700 p-2  rounded-lg hover:bg-gray-600">
+            <LogOut size={20} />
+            <span className="ml-3">Logout</span>
+          </button>
         </ul>
       </div>
     </div>

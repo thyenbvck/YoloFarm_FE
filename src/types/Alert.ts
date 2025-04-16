@@ -1,5 +1,5 @@
 export interface AlertData {
-  id: string,
+  id: string;
   type: "TEMPERATURE" | "HUMIDITY" | "LIGHT" | "SOIL_MOISTURE";
   value: number;
   message: string;

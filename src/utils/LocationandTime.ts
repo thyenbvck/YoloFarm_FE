@@ -24,7 +24,7 @@ export function getLocationAndTime(): Promise<LocationAndTime> {
       },
       (error) => {
         reject(new Error("Lỗi khi lấy vị trí: " + error.message));
-      }
+      },
     );
   });
 }
