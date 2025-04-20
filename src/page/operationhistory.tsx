@@ -106,10 +106,13 @@ const OperationHistory = () => {
         
         if (filterDate) {
           const filterDateObj = new Date(filterDate);
-          filteredData = filteredData.filter(item => 
-            item.timestamp.toISOString().split('T')[0] === filterDateObj.toISOString().split('T')[0]
-          );
+        
+          filteredData = filteredData.filter(item => {
+            const itemDate = new Date(item.timestamp);
+            return itemDate.toDateString() === filterDateObj.toDateString();
+          });
         }
+        
         
         // Sắp xếp theo thời gian mới nhất trước
         filteredData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
@@ -137,15 +140,13 @@ const OperationHistory = () => {
 
   // Format date để hiển thị
   const formatDateTime = (date: Date) => {
-    return date.toLocaleString('vi-VN', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    });
+    return new Date(date).toLocaleString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
   };
 
   const renderActionStatus = (action: string) => {
@@ -167,8 +168,8 @@ const OperationHistory = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-1/7 bg-gray-200">
+    <div className="flex overflow-hidden h-screen">
+      <div className="w-1/7 bg-gray-200 ">
         <Sidebar />
       </div>
 

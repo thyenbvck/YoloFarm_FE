@@ -96,3 +96,20 @@ class WebSocketService {
 
 const websocketService = new WebSocketService();
 export default websocketService;
+
+
+export const fetchSensorData = async (deviceName: string): Promise<SensorData[] | null> => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/sensor/sensors/${deviceName}`);
+
+    if (!res.ok) {
+      throw new Error(`Lỗi HTTP: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data.data as SensorData[];
+  } catch (err) {
+    console.error("Lỗi khi tải thông báo:", err);
+    return [];
+  }
+};

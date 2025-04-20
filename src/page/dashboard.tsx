@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "../component/sidebar.js";
 import UserInfo from "../component/toolBar.jsx";
 import avatar from "../assets/avt.jpg";
-import websocketService from "../api/dashboardAPI.js";
+import websocketService, { fetchSensorData } from "../api/dashboardAPI.js";
 import { getLocationAndTime } from "@/utils/LocationandTime.js";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import type { AlertData } from "@/types/Alert.js";
@@ -23,7 +23,7 @@ const Dashboard = () => {
   const [temperature, setTemperature] = useState<number | null>(null);
   const [humidity, setHumidity] = useState<number | null>(null);
   const [light, setLight] = useState<number | null>(null);
-  const [soilMoisture, setSoilMoisture] = useState<number>(50);
+  const [soilMoisture, setSoilMoisture] = useState<number | null>(null);
   const [temperatureData, setTemperatureData] = useState<
     { time: string; value: number }[]
   >([]);
@@ -55,6 +55,85 @@ const Dashboard = () => {
     }
   };
   useEffect(() => {
+    const getlight = async () => {
+          const data = await fetchSensorData("dosang");
+          if (!data) {
+            setLight(150); // Giá trị mặc định nếu data là null
+            return;
+          }
+          const sortedAlerts = [...data].sort((a, b) => {
+            return new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime();
+          }).slice(0, 10)
+          setLight(sortedAlerts[0].value);
+          const mappedData = sortedAlerts.map((item) => ({
+            time: new Date(item.recordedAt).toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }), // hoặc .toISOString()
+            value: item.value,
+          }));
+        
+          setLightData(mappedData);
+        };
+    
+    getlight();
+    const gethum = async () => {
+          const data = await fetchSensorData("doam");
+          if (!data) {
+            setHumidity(45); // Giá trị mặc định nếu data là null
+            return;
+          }
+          const sortedAlerts = [...data].sort((a, b) => {
+            return new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime();
+          }).slice(0, 10)
+          setHumidity(sortedAlerts[0].value);
+          const mappedData = sortedAlerts.map((item) => ({
+            time: new Date(item.recordedAt).toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }), // hoặc .toISOString()
+            value: item.value,
+          }));
+        
+          setHumidityData(mappedData);
+        };
+    
+        gethum();
+    const getdoamdat = async () => {
+          const data = await fetchSensorData("doamdat");
+          if (!data) {
+            setSoilMoisture(150); // Giá trị mặc định nếu data là null
+            return;
+          }
+          const sortedAlerts = [...data].sort((a, b) => {
+            return new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime();
+          }).slice(0, 10)
+          setSoilMoisture(sortedAlerts[0].value);
+        };
+    
+        getdoamdat();
+    const getSensor = async () => {
+          const data = await fetchSensorData("nhietdo");
+          if (!data) {
+            setTemperature(30); // Giá trị mặc định nếu data là null
+            return;
+          }
+          const sortedAlerts = [...data].sort((a, b) => {
+            return new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime();
+          }).slice(0, 10)
+          setTemperature(sortedAlerts[0].value);
+          const mappedData = sortedAlerts.map((item) => ({
+            time: new Date(item.recordedAt).toLocaleTimeString("vi-VN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }), // hoặc .toISOString()
+            value: item.value,
+          }));
+        
+          setTemperatureData(mappedData);
+        };
+    
+    getSensor();
     websocketService.onSensorData((data) => {
       const timestamp = new Date().toLocaleTimeString();
       if (data.type === "SOIL_MOISTURE") {
@@ -83,6 +162,7 @@ const Dashboard = () => {
       }
     });
     websocketService.onDeviceActivity((activity) => {
+      console.log(activity)
       if (activity.deviceName === "den") {
         setIsLightOn(activity.action === "on");
       }
@@ -126,7 +206,7 @@ const Dashboard = () => {
     {
       name: "Soil Moisture",
       value: soilMoisture,
-      fill: getColor(soilMoisture),
+      fill: getColor(soilMoisture || 50),
     },
   ];
 
@@ -155,11 +235,11 @@ const Dashboard = () => {
     websocketService.sendCommand("maybom", isPumpOn ? "off" : "on");
   };
   return (
-    <div className="flex">
+    <div className="flex overflow-hidden h-screen">
       <div className="w-1/7 bg-gray-200">
         <Sidebar />
       </div>
-      <div className="flex-grow p-3 bg-gray-100">
+      <div className="flex-grow p-3 bg-gray-100 overflow-y-scroll scrollbar-none">
         <div className="grid grid-cols-12 gap-3 auto-rows-auto">
           <div className="col-span-12 ">
             <UserInfo name="Bach Hoang" status="available" avatar={avatar} />

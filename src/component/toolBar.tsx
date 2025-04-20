@@ -54,7 +54,7 @@ const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
   }, []);
   return (
     <div
-      className={`w-full rounded-lg flex items-center justify-between  p-2 shadow-lg z-50 ${
+      className={`w-full rounded-lg flex items-center justify-between p-2 shadow-lg z-50 justify-end ${
         isDarkMode ? "bg-gray-800 text-white" : "bg-greenStart  text-white"
       }`}
     >
@@ -68,8 +68,8 @@ const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
       </button> */}
       {/* User Info */}
       <div className="flex items-center">
-        <div className="p-2">
-          <NotificationBell alerts={alerts} />
+        <div className="p-2 ">
+          <NotificationBell alerts={alerts}/>
         </div>
         <img
           src={avatar}
