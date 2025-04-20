@@ -34,7 +34,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 const Sidebar: React.FC = () => {
   return (
-    <div className="h-screen w-60 bg-linear-to-b from-greenStart to-greenEnd text-white flex flex-col">
+    <div className="h-full w-60 bg-linear-to-b from-greenStart to-greenEnd text-white flex flex-col">
       <div>
         <ul className="p-4 space-y-3">
           <SidebarItem icon={<Home size={20} />} text="Home" />

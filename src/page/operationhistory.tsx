@@ -164,12 +164,12 @@ const OperationHistory = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/4 bg-gray-200">
+    <div className="flex">
+      <div className="w-1/7 bg-gray-200">
         <Sidebar />
       </div>
 
-      <div className="flex-grow p-5 bg-gray-100">
+      <div className="flex-grow p-3 bg-gray-100">
         <div className="grid grid-cols-12 gap-4 auto-rows-auto">
           <div className="col-span-12">
             <UserInfo name="Bach Hoang" status="available" avatar={avatar} />
