@@ -46,8 +46,7 @@ const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
       const data = await fetchAlerts();
       const sortedAlerts = [...alerts].sort((a, b) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
-      console.log(sortedAlerts);
+      }).slice(0, 10);
       setAlerts(sortedAlerts);
     };
 
