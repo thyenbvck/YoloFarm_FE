@@ -7,11 +7,12 @@ import websocketService from "../api/dashboardAPI.js";
 import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import type { HistoryRecord } from "@/types/HistoryRecord.js";
+import { fetchDeviceActivity } from "@/api/deviceActivityAPI.js";
 
 const OperationHistory = () => {
   const [historyData, setHistoryData] = useState<HistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filterDevice, setFilterDevice] = useState<'all' | 'Đèn' | 'Máy bơm'>('all');
+  const [filterDevice, setFilterDevice] = useState<'all' | 'den' | 'maybom'>('all');
   const [filterDate, setFilterDate] = useState<string>('');
   
   // Thêm state phân trang
@@ -24,93 +25,95 @@ const OperationHistory = () => {
       setLoading(true);
       try {
         // Mock data với kiểu Date
-        const mockData: HistoryRecord[] = [
-          {
-            device: 'Đèn',
-            action: 'on',
-            triggeredBy: 'user',
-            timeStart: new Date('2023-05-15T08:30:45')
-          },
-          {
-            device: 'Máy bơm',
-            action: 'off',
-            triggeredBy: 'system',
-            reason: 'Độ ẩm đất cao',
-            timeStart: new Date('2023-05-15T09:15:22')
-          },
-          {
-            device: 'Đèn',
-            action: 'off',
-            triggeredBy: 'system',
-            reason: 'Trời sáng',
-            timeStart: new Date('2023-05-15T06:00:00')
-          },
-          {
-            device: 'Máy bơm',
-            action: 'off',
-            triggeredBy: 'system',
-            reason: 'Độ ẩm đất cao',
-            timeStart: new Date('2023-05-15T09:17:22')
-          },
-          {
-            device: 'Đèn',
-            action: 'off',
-            triggeredBy: 'system',
-            reason: 'Trời sáng',
-            timeStart: new Date('2023-05-15T06:30:00')
-          },
-          {
-            device: 'Máy bơm',
-            action: 'on',
-            triggeredBy: 'user',
-            timeStart: new Date('2023-05-14T17:45:30')
-          },
-          // Thêm nhiều dữ liệu hơn để demo phân trang
-          {
-            device: 'Đèn',
-            action: 'on',
-            triggeredBy: 'user',
-            timeStart: new Date('2023-05-16T18:20:00')
-          },
-          {
-            device: 'Máy bơm',
-            action: 'off',
-            triggeredBy: 'system',
-            reason: 'Độ ẩm đạt ngưỡng',
-            timeStart: new Date('2023-05-16T19:05:00')
-          },
-          {
-            device: 'Đèn',
-            action: 'on',
-            triggeredBy: 'user',
-            timeStart: new Date('2023-05-17T07:15:00')
-          },
-          {
-            device: 'Máy bơm',
-            action: 'on',
-            triggeredBy: 'system',
-            reason: 'Độ ẩm thấp',
-            timeStart: new Date('2023-05-17T08:30:00')
-          }
-        ];
-
+        const mockData: HistoryRecord[] = 
+        await fetchDeviceActivity();
+        
+        // [
+        //   {
+        //     device: 'Đèn',
+        //     action: 'on',
+        //     triggeredBy: 'user',
+        //     timeStart: new Date('2023-05-15T08:30:45')
+        //   },
+        //   {
+        //     device: 'Máy bơm',
+        //     action: 'off',
+        //     triggeredBy: 'system',
+        //     reason: 'Độ ẩm đất cao',
+        //     timeStart: new Date('2023-05-15T09:15:22')
+        //   },
+        //   {
+        //     device: 'Đèn',
+        //     action: 'off',
+        //     triggeredBy: 'system',
+        //     reason: 'Trời sáng',
+        //     timeStart: new Date('2023-05-15T06:00:00')
+        //   },
+        //   {
+        //     device: 'Máy bơm',
+        //     action: 'off',
+        //     triggeredBy: 'system',
+        //     reason: 'Độ ẩm đất cao',
+        //     timeStart: new Date('2023-05-15T09:17:22')
+        //   },
+        //   {
+        //     device: 'Đèn',
+        //     action: 'off',
+        //     triggeredBy: 'system',
+        //     reason: 'Trời sáng',
+        //     timeStart: new Date('2023-05-15T06:30:00')
+        //   },
+        //   {
+        //     device: 'Máy bơm',
+        //     action: 'on',
+        //     triggeredBy: 'user',
+        //     timeStart: new Date('2023-05-14T17:45:30')
+        //   },
+        //   // Thêm nhiều dữ liệu hơn để demo phân trang
+        //   {
+        //     device: 'Đèn',
+        //     action: 'on',
+        //     triggeredBy: 'user',
+        //     timeStart: new Date('2023-05-16T18:20:00')
+        //   },
+        //   {
+        //     device: 'Máy bơm',
+        //     action: 'off',
+        //     triggeredBy: 'system',
+        //     reason: 'Độ ẩm đạt ngưỡng',
+        //     timeStart: new Date('2023-05-16T19:05:00')
+        //   },
+        //   {
+        //     device: 'Đèn',
+        //     action: 'on',
+        //     triggeredBy: 'user',
+        //     timeStart: new Date('2023-05-17T07:15:00')
+        //   },
+        //   {
+        //     device: 'Máy bơm',
+        //     action: 'on',
+        //     triggeredBy: 'system',
+        //     reason: 'Độ ẩm thấp',
+        //     timeStart: new Date('2023-05-17T08:30:00')
+        //   }
+        // ];
         // Filter data
         let filteredData = mockData;
         
         if (filterDevice !== 'all') {
-          filteredData = filteredData.filter(item => item.device === filterDevice);
+          filteredData = filteredData.filter(item => item.deviceName === filterDevice);
         }
         
         if (filterDate) {
           const filterDateObj = new Date(filterDate);
           filteredData = filteredData.filter(item => 
-            item.timeStart.toISOString().split('T')[0] === filterDateObj.toISOString().split('T')[0]
+            item.timestamp.toISOString().split('T')[0] === filterDateObj.toISOString().split('T')[0]
           );
         }
-
-        // Sắp xếp theo thời gian mới nhất trước
-        filteredData.sort((a, b) => b.timeStart.getTime() - a.timeStart.getTime());
         
+        // Sắp xếp theo thời gian mới nhất trước
+        filteredData.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      
         setTotalItems(filteredData.length);
         setHistoryData(filteredData);
       } catch (error) {
@@ -157,8 +160,8 @@ const OperationHistory = () => {
   const renderTriggeredBy = (triggeredBy: string) => {
     return (
       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-        ${triggeredBy === 'user' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>
-        {triggeredBy === 'user' ? 'NGƯỜI DÙNG' : 'HỆ THỐNG'}
+        ${triggeredBy === 'User' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>
+        {triggeredBy === 'User' ? 'NGƯỜI DÙNG' : 'HỆ THỐNG'}
       </span>
     );
   };
@@ -169,8 +172,8 @@ const OperationHistory = () => {
         <Sidebar />
       </div>
 
-      <div className="flex-grow p-5 bg-gray-100">
-        <div className="grid grid-cols-12 gap-4 auto-rows-auto">
+      <div className="flex-grow px-5 bg-gray-100 overflow-y-scroll scrollbar-none">
+        <div className="grid grid-cols-12 gap-2">
           <div className="col-span-12">
             <UserInfo name="Bach Hoang" status="available" avatar={avatar} />
           </div>
@@ -187,13 +190,13 @@ const OperationHistory = () => {
                   className="border p-2 rounded w-full"
                   value={filterDevice}
                   onChange={(e) => {
-                    setFilterDevice(e.target.value as 'all' | 'Đèn' | 'Máy bơm');
+                    setFilterDevice(e.target.value as 'all' | 'den' | 'maybom');
                     setCurrentPage(1); // Reset về trang đầu khi thay đổi filter
                   }}
                 >
                   <option value="all">Tất cả thiết bị</option>
-                  <option value="Đèn">Đèn</option>
-                  <option value="Máy bơm">Máy bơm</option>
+                  <option value="den">Đèn</option>
+                  <option value="maybom">Máy bơm</option>
                 </select>
               </div>
               
@@ -242,8 +245,8 @@ const OperationHistory = () => {
                     {currentItems.length > 0 ? (
                       currentItems.map((item, index) => (
                         <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap">{formatDateTime(item.timeStart)}</td>
-                          <td className="px-6 py-4 whitespace-nowrap font-medium">{item.device}</td>
+                          <td className="px-6 py-4 whitespace-nowrap">{formatDateTime(item.timestamp)}</td>
+                          <td className="px-6 py-4 whitespace-nowrap font-medium">{item.deviceName == "den" ? "Đèn": "Máy bơm"}</td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             {renderActionStatus(item.action)}
                           </td>
@@ -251,7 +254,7 @@ const OperationHistory = () => {
                             {renderTriggeredBy(item.triggeredBy)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {item.triggeredBy === 'system' ? item.reason : '-'}
+                            {item.reason}
                           </td>
                         </tr>
                       ))

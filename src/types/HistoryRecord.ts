@@ -1,7 +1,7 @@
 export interface HistoryRecord {
-    device: 'Đèn' | 'Máy bơm';
+    deviceName: 'den' | 'maybom';
     action: 'on' | 'off';
-    triggeredBy: 'user' | 'system';
-    reason?: string;
-    timeStart: Date;
+    triggeredBy: 'User' | 'System';
+    reason: string;
+    timestamp: Date;
   }

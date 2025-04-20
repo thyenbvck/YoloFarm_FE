@@ -44,7 +44,7 @@ const UserInfo = ({ name, status, avatar }: UserInfoProps) => {
   useEffect(() => {
     const getAlerts = async () => {
       const data = await fetchAlerts();
-      const sortedAlerts = [...alerts].sort((a, b) => {
+      const sortedAlerts = [...data].sort((a, b) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       }).slice(0, 10);
       setAlerts(sortedAlerts);

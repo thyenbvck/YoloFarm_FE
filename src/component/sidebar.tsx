@@ -11,6 +11,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { JSX } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface SidebarItemProps {
   icon: JSX.Element;
@@ -33,30 +34,59 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 };
 
 const Sidebar: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const routes = [
+    { path: "/dashboard", icon: <Home size={20} />, text: "Home" },
+    { path: "/dashboard", icon: <LayoutDashboard size={20} />, text: "Dashboard" },
+    { path: "/dashboard", icon: <Cloud size={20} />, text: "Humidity" },
+    { path: "/dashboard", icon: <Sun size={20} />, text: "Light" },
+    { path: "/dashboard", icon: <Thermometer size={20} />, text: "Temperature" },
+    { path: "/dashboard", icon: <Users size={20} />, text: "Irrigation" },
+  ];
+
+  const bottomRoutes = [
+    { path: "/history", icon: <FileText size={20} />, text: "Report" },
+    { path: "/notification", icon: <Bell size={20} />, text: "Notification" },
+    { path: "/setting", icon: <Settings size={20} />, text: "Setting" },
+  ];
+
+  const handleClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
-    <div className="h-screen w-60 bg-linear-to-b from-greenStart to-greenEnd text-white flex flex-col">
+    <div className="h-screen w-60 bg-gradient-to-b from-greenStart to-greenEnd text-white flex flex-col">
       <div>
         <ul className="p-4 space-y-3">
-          <SidebarItem icon={<Home size={20} />} text="Home" />
-          <SidebarItem
-            icon={<LayoutDashboard size={20} />}
-            text="Dashboard"
-            active
-          />
-          <SidebarItem icon={<Cloud size={20} />} text="Humidity" />
-          <SidebarItem icon={<Sun size={20} />} text="Light" />
-          <SidebarItem icon={<Thermometer size={20} />} text="Temperature" />
-          <SidebarItem icon={<Users size={20} />} text="Irrigation" />
+          {routes.map((route) => (
+            <div key={route.text} onClick={() => handleClick(route.path)}>
+              <SidebarItem
+                icon={route.icon}
+                text={route.text}
+                active={location.pathname === route.path}
+              />
+            </div>
+          ))}
         </ul>
       </div>
 
-      {/* Bottom Section */}
       <div>
         <ul className="p-4 space-y-2">
-          <SidebarItem icon={<FileText size={20} />} text="Report" />
-          <SidebarItem icon={<Bell size={20} />} text="Notification" />
-          <SidebarItem icon={<Settings size={20} />} text="Setting" />
-          <button className="mt-4 flex items-center w-4/5 bg-gray-700 p-2  rounded-lg hover:bg-gray-600">
+          {bottomRoutes.map((route) => (
+            <div key={route.text} onClick={() => handleClick(route.path)}>
+              <SidebarItem
+                icon={route.icon}
+                text={route.text}
+                active={location.pathname === route.path}
+              />
+            </div>
+          ))}
+          <button
+            className="mt-4 flex items-center w-4/5 bg-gray-700 p-2 rounded-lg hover:bg-gray-600"
+            onClick={() => navigate("/")}
+          >
             <LogOut size={20} />
             <span className="ml-3">Logout</span>
           </button>
