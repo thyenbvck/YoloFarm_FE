@@ -155,8 +155,8 @@ const Dashboard = () => {
     websocketService.sendCommand("maybom", isPumpOn ? "off" : "on");
   };
   return (
-    <div className="flex h-screen">
-      <div className="w-1/4 bg-gray-200">
+    <div className="flex">
+      <div className="w-1/7 bg-gray-200">
         <Sidebar />
       </div>
       <div className="flex-grow p-3 bg-gray-100">

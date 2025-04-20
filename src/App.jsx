@@ -5,6 +5,7 @@ import Dashboard from "./page/dashboard";
 import OperationHistory from "./page/operationhistory";
 import ProtectedRoute from "./routes/protectedRoutes";
 import LoginLayout from "./component/Layouts/Loginlayout";
+import OperationHistory from "./page/operationhistory";
 function App() {
   return (
     <AuthProvider>
