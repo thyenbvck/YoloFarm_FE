@@ -38,12 +38,12 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const routes = [
-    { path: "/dashboard", icon: <Home size={20} />, text: "Home" },
+    { path: "/home", icon: <Home size={20} />, text: "Home" },
     { path: "/dashboard", icon: <LayoutDashboard size={20} />, text: "Dashboard" },
-    { path: "/dashboard", icon: <Cloud size={20} />, text: "Humidity" },
-    { path: "/dashboard", icon: <Sun size={20} />, text: "Light" },
-    { path: "/dashboard", icon: <Thermometer size={20} />, text: "Temperature" },
-    { path: "/dashboard", icon: <Users size={20} />, text: "Irrigation" },
+    { path: "/humidity", icon: <Cloud size={20} />, text: "Humidity" },
+    { path: "/light", icon: <Sun size={20} />, text: "Light" },
+    { path: "/temperature", icon: <Thermometer size={20} />, text: "Temperature" },
+    { path: "/irrigation", icon: <Users size={20} />, text: "Irrigation" },
   ];
 
   const bottomRoutes = [
