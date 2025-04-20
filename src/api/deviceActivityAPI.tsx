@@ -1,7 +1,7 @@
 import type { HistoryRecord } from "@/types/HistoryRecord.js";
 export const fetchDeviceActivity = async (): Promise<HistoryRecord[]> => {
   try {
-    const res = await fetch("http://localhost:8080/api/devicelog/logs");
+    const res = await fetch("https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/devicelog/logs");
 
     if (!res.ok) {
       throw new Error(`Lỗi HTTP: ${res.status}`);

@@ -1,7 +1,7 @@
 import { AlertData } from "@/types/Alert";
 export const fetchAlerts = async (): Promise<AlertData[]> => {
   try {
-    const res = await fetch("http://localhost:8080/api/threshold/alerts");
+    const res = await fetch("https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/threshold/alerts");
 
     if (!res.ok) {
       throw new Error(`Lỗi HTTP: ${res.status}`);

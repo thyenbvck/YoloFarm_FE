@@ -13,7 +13,7 @@ class WebSocketService {
 
   constructor() {
     this.client = new Client({
-      brokerURL: "ws://localhost:8080/api/ws",
+      brokerURL: "wss://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/ws",
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("✅ Kết nối WebSocket thành công!");
@@ -100,7 +100,7 @@ export default websocketService;
 
 export const fetchSensorData = async (deviceName: string): Promise<SensorData[] | null> => {
   try {
-    const res = await fetch(`http://localhost:8080/api/sensor/sensors/${deviceName}`);
+    const res = await fetch(`https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/sensor/sensors/${deviceName}`);
 
     if (!res.ok) {
       throw new Error(`Lỗi HTTP: ${res.status}`);

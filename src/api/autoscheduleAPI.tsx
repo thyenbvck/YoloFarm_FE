@@ -153,7 +153,7 @@ import { AutoS } from "@/types/AutoSchedule";
 // Lấy tất cả lịch
 export const fetchSchedules = async (): Promise<AutoS[]> => {
   try {
-    const res = await fetch("http://localhost:8080/api/DeviceScheduled/");
+    const res = await fetch("https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/DeviceScheduled/");
     if (!res.ok) throw new Error(`Lỗi HTTP: ${res.status}`);
     const data = await res.json();
     return data.data as AutoS[];
@@ -166,7 +166,7 @@ export const fetchSchedules = async (): Promise<AutoS[]> => {
 // Tạo mới lịch
 export const createSchedule = async (schedule: AutoS): Promise<AutoS | null> => {
   try {
-    const res = await fetch("http://localhost:8080/api/DeviceScheduled/create", {
+    const res = await fetch("https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/DeviceScheduled/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -187,7 +187,7 @@ export const createSchedule = async (schedule: AutoS): Promise<AutoS | null> => 
 export const updateSchedule = async (id: number, schedule: AutoS): Promise<AutoS | null> => {
   console.log(id, schedule)
   try {
-    const res = await fetch(`http://localhost:8080/api/DeviceScheduled/update/${id}`, {
+    const res = await fetch(`https://temporary-antonie-tochucdaumat-0005f387.koyeb.app/api/DeviceScheduled/update/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
